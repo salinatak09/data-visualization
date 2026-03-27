@@ -5,11 +5,12 @@ import type {ApexOptions} from "apexcharts";
 
 type Props = {
   meterData: Data[],
+  meters: string[],
   type: 'line' | 'bar',
   alerts: Alert[]
 }
 
-const LineChart = ({meterData, type, alerts}: Props) => {
+const LineChart = ({meterData, meters, type, alerts}: Props) => {
 
   // Highlight alert timestamps using annotations
   const annotations = useMemo(() => {
@@ -39,28 +40,35 @@ const LineChart = ({meterData, type, alerts}: Props) => {
   }, [alerts]);
 
   // Data to display on chart
-  const series = [
-    {
-      name: "Meter1",
-      data: meterData.map((meter)=>meter.M1)
-    },
-    {
-      name: "Meter2",
-      data: meterData.map((meter)=>meter.M2),
-    },
-    {
-      name: "Meter3",
-      data: meterData.map((meter)=>meter.M3)
-    },
-    {
-      name: "Meter4",
-      data: meterData.map((meter)=>meter.M4)
-    },
-    {
-      name: "Master",
-      data: meterData.map((meter)=>meter.master)
-    },
-  ]
+  // const series = [
+  //   {
+  //     name: "Meter1",
+  //     data: meterData.map((meter)=>meter.M1)
+  //   },
+  //   {
+  //     name: "Meter2",
+  //     data: meterData.map((meter)=>meter.M2),
+  //   },
+  //   {
+  //     name: "Meter3",
+  //     data: meterData.map((meter)=>meter.M3)
+  //   },
+  //   {
+  //     name: "Meter4",
+  //     data: meterData.map((meter)=>meter.M4)
+  //   },
+  //   {
+  //     name: "Master",
+  //     data: meterData.map((meter)=>meter.master)
+  //   },
+  // ]
+
+  const series = useMemo(() => {
+    return meters.map((m) => ({
+      name: m,
+      data: meterData.map((d) => d[m]),
+    }));
+  }, [meterData, meters]);
 
   const options: ApexOptions = {
     chart: {
@@ -88,8 +96,11 @@ const LineChart = ({meterData, type, alerts}: Props) => {
     xaxis: {
       type: 'datetime',
       labels: { datetimeUTC: false },
-      // title: { text: "Time" },
+      title: { text: "Time" },
       categories: meterData.map(meter=>meter.time),
+    },
+    yaxis:{
+      title: {text: "Power (Watts)"}
     },
     tooltip:{
       shared: true,

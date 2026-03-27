@@ -31,6 +31,7 @@ const Visualization = () => {
   const [minStart, setMinStart] = useState<string | number>();
   const [maxEnd, setMaxEnd] = useState<string>();
   const [enableAlert, setEnableAlert] = useState<boolean>(false);
+  const [selectedMeters, setSelectedMeters] = useState<string[]>([]);
   
   // Fetch Data from CSV file
   const fetchData = async()=>{
@@ -152,6 +153,12 @@ const Visualization = () => {
     return arr;
   };
 
+  const toggleMeter = (m:string) => {
+    setSelectedMeters((prev) =>
+      prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]
+    );
+  };
+
   // avoid using setState to minimize re-renders
   // use useMemo instead
   const alerts = useMemo(()=>{
@@ -185,6 +192,20 @@ const Visualization = () => {
           </div>
         </div>
 
+        {/* Meter selection */}
+        <div className='flex gap-4 my-4'>
+          <span>Select Meters: </span>
+          {['M1','M2','M3','M4', 'master'].map((m) => (
+            <label key={m} className="ml-2">
+              <input
+                type="checkbox"
+                checked={selectedMeters.includes(m)}
+                onChange={() => toggleMeter(m)}
+              /> {m}
+            </label>
+          ))}
+        </div>
+
         {/* Button Controls */}
         <div className='flex gap-4'>
           <Button 
@@ -211,7 +232,7 @@ const Visualization = () => {
 
       {/* Graph */}
       <div className='w-4xl lg:w-6xl'>
-        <LineChart meterData={filteredData} type={graphType} alerts={enableAlert ?  alerts : []}/>
+        <LineChart meterData={filteredData} meters={selectedMeters} type={graphType} alerts={enableAlert ?  alerts : []}/>
       </div>
     </div>
   )
