@@ -41,6 +41,7 @@ http://localhost:5173
 
 ## 🌐 Development Build
 ```
+npm install
 npm run dev
 ```
 

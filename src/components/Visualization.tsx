@@ -21,6 +21,8 @@ export type Alert = {
   value: number;
 }
 
+export type Meters = "M1" | "M2" | "M1" | "M2" | "master";
+
 const Visualization = () => {
 
   const [data, setData] = useState<Data[] | []>([]);
@@ -31,7 +33,7 @@ const Visualization = () => {
   const [minStart, setMinStart] = useState<string | number>();
   const [maxEnd, setMaxEnd] = useState<string>();
   const [enableAlert, setEnableAlert] = useState<boolean>(false);
-  const [selectedMeters, setSelectedMeters] = useState<string[]>([]);
+  const [selectedMeters, setSelectedMeters] = useState<Meters[]>(["M1"]);
   
   // Fetch Data from CSV file
   const fetchData = async()=>{
@@ -153,7 +155,7 @@ const Visualization = () => {
     return arr;
   };
 
-  const toggleMeter = (m:string) => {
+  const toggleMeter = (m: Meters) => {
     setSelectedMeters((prev) =>
       prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]
     );
@@ -195,7 +197,7 @@ const Visualization = () => {
         {/* Meter selection */}
         <div className='flex gap-4 my-4'>
           <span>Select Meters: </span>
-          {['M1','M2','M3','M4', 'master'].map((m) => (
+          {(['M1','M2','M3','M4', 'master'] as Meters[]).map((m) => (
             <label key={m} className="ml-2">
               <input
                 type="checkbox"
