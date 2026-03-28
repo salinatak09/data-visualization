@@ -183,7 +183,7 @@ const Visualization = () => {
       {/* Controls */}
       <div className="m-4 flex flex-col gap-2 justify-center">
         {/* Start & end Date inputs */}
-        <div className='flex gap-4'>
+        <div className='flex gap-4 flex-col md:flex-row'>
           <div className='mx-4 my-2'>
             <label>Start Date & time: </label>
             <input className='border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500' type="datetime-local" onChange={(e) => setStartDate(e.target.value)} min={minStart} max={maxEnd} value={startDate}/>
@@ -195,7 +195,7 @@ const Visualization = () => {
         </div>
 
         {/* Meter selection */}
-        <div className='flex gap-4 my-4'>
+        <div className='flex gap-4 my-4 flex-col sm:flex-row'>
           <span>Select Meters: </span>
           {(['M1','M2','M3','M4', 'master'] as Meters[]).map((m) => (
             <label key={m} className="ml-2">
@@ -209,7 +209,7 @@ const Visualization = () => {
         </div>
 
         {/* Button Controls */}
-        <div className='flex gap-4'>
+        <div className='flex gap-4 flex-col sm:flex-row'>
           <Button 
             variant='outline' 
             disabled={graphType === 'bar'} 
@@ -233,7 +233,7 @@ const Visualization = () => {
       </div>
 
       {/* Graph */}
-      <div className='w-4xl lg:w-6xl'>
+      <div className='w-xl sm:w-2xl md:w-3xl lg:w-5xl xl:w-6xl border border-2 p-3 rounded m-4'>
         <LineChart meterData={filteredData} meters={selectedMeters} type={graphType} alerts={enableAlert ?  alerts : []}/>
       </div>
     </div>

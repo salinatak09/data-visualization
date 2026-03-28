@@ -62,7 +62,7 @@ const LineChart = ({meterData, meters, type, alerts}: Props) => {
     },
     title: {
       text: 'Meter Readings',
-      align: 'left'
+      align: 'center'
     },
     grid: {
       row: {
